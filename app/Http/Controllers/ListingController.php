@@ -11,8 +11,7 @@ class ListingController extends Controller
     public function index()
     {
         return view('listings.index', [
-            'heading' => "Listing All JOb",
-            'listings' => Listing::all()
+            'listings' => Listing::latest()->filter(request(['tag']))->get()
         ]);
     }
     //display single listing
