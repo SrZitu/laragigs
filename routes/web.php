@@ -60,7 +60,11 @@ Route::get('/',[ListingController::class,'index']);
 
 // If a matching model instance cannot be found, Laravel will automatically return a 404 response. You can also customize this behavior by defining a custom 404 handler in your application.
 
+//create post.this most be avobe show
+Route::get('/listings/create',[ListingController::class,'create']);
 
+//store the form data
+Route::post('/listings',[ListingController::class,'store']);
 
 // single listing route
 Route::get('/listings/{listing}',[ListingController::class,'show']);
