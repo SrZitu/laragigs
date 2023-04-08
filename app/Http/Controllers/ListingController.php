@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Pagination\Paginator;
 
 class ListingController extends Controller
 {
@@ -12,7 +13,7 @@ class ListingController extends Controller
     public function index()
     {
         return view('listings.index', [
-            'listings' => Listing::latest()->filter(request(['tag', 'search']))->get()
+            'listings' => Listing::latest()->filter(request(['tag', 'search']))->paginate(4)
         ]);
     }
     //display single listing
@@ -43,8 +44,13 @@ class ListingController extends Controller
                 'description' => 'required',
             ]
         );
+
+        if ($request->hasfile('logo')) {
+            $formFields['logo'] = $request->file('logo')->store('logos', 'public');
+        }
+
+
         Listing::create($formFields);
-        return redirect('/')->with('message','Listing Created Successfully');
+        return redirect('/')->with('message', 'Listing Created Successfully');
     }
 }
-
