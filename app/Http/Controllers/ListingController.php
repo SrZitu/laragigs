@@ -49,12 +49,14 @@ class ListingController extends Controller
             $formFields['logo'] = $request->file('logo')->store('logos', 'public');
         }
 
-
         Listing::create($formFields);
         return redirect('/')->with('message', 'Listing Created Successfully');
     }
-    public function edit(Listing $listing){
-        return view('listings.edit',['listing'=>$listing]);
+
+    //Editing gig
+    public function edit(Listing $listing)
+    {
+        return view('listings.edit', ['listing' => $listing]);
     }
     public function update(Request $request, Listing $listing)
     {
@@ -77,5 +79,12 @@ class ListingController extends Controller
 
         $listing->update($formFields);
         return back()->with('message', 'Listing Updated Successfully');
+    }
+
+    //deleting listing
+    public function delete(Listing $listing)
+    {
+        $listing->delete();
+        return redirect('/')->with('message', 'Listing deleted Successfully');
     }
 }
