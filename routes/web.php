@@ -26,23 +26,23 @@ use App\Http\Controllers\ListingController;
 // update - Update listing
 // destroy - Delete listing
 
-Route::get('/hello',function(){
- return response("<h1>Hello World</h1>",200)
- ->header('content-type','text/plain') //converting html tag into a plain text
- ->header('foo','bar');
+Route::get('/hello', function () {
+    return response("<h1>Hello World</h1>", 200)
+        ->header('content-type', 'text/plain') //converting html tag into a plain text
+        ->header('foo', 'bar');
 });
 
 //here is called wildcard
-Route::get('posts/{id}',function($id){
- return response("post:". $id);
-})->where('id','[0-9]+');  //validating that the must be a number
+Route::get('posts/{id}', function ($id) {
+    return response("post:" . $id);
+})->where('id', '[0-9]+');  //validating that the must be a number
 
-Route::get('/search',function(Request $request){
-dd($request);
+Route::get('/search', function (Request $request) {
+    dd($request);
 });
 
 // all listing
-Route::get('/',[ListingController::class,'index']);
+Route::get('/', [ListingController::class, 'index']);
 
 //Single Listing
 // Route::get('/listings/{id}',function($id){
@@ -71,35 +71,35 @@ Route::get('/',[ListingController::class,'index']);
 // If a matching model instance cannot be found, Laravel will automatically return a 404 response. You can also customize this behavior by defining a custom 404 handler in your application.
 
 //create post.this most be avobe show
-Route::get('/listings/create',[ListingController::class,'create']);
+Route::get('/listings/create', [ListingController::class, 'create'])->middleware('auth');;
 
 //store the form data
-Route::post('/listings',[ListingController::class,'store']);
+Route::post('/listings', [ListingController::class, 'store'])->middleware('auth');;
 
 //Show editing Form
-Route::get('/listings/{listing}/edit',[ListingController::class,'edit']);
+Route::get('/listings/{listing}/edit', [ListingController::class, 'edit'])->middleware('auth');;
 
 //Update Listing
-Route::put('/listings/{listing}',[ListingController::class,'update']);
+Route::put('/listings/{listing}', [ListingController::class, 'update'])->middleware('auth');;
 
 //deleting listing
-Route::delete('/listings/{listing}',[ListingController::class,'delete']);
+Route::delete('/listings/{listing}', [ListingController::class, 'delete'])->middleware('auth');;
 
 // single listing route
-Route::get('/listings/{listing}',[ListingController::class,'show']);
+Route::get('/listings/{listing}', [ListingController::class, 'show']);
 
 
 //show register create form
-Route::get('/register',[UserController::class,'create']);
+Route::get('/register', [UserController::class, 'create'])->middleware('guest');
 
 //create a new user
-Route::post('/users',[UserController::class,'store']);
+Route::post('/users', [UserController::class, 'store']);
 
 //logout
-Route::post('/logout',[UserController::class,'logout']);
+Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');;
 
 //login
-Route::get('/login',[UserController::class,'login']);
+Route::get('/login', [UserController::class, 'login'])->name('login')->middleware('guest');;
 
 //authenticate
-Route::post('/users/authenticate',[UserController::class,'authenticate']);
+Route::post('/users/authenticate', [UserController::class, 'authenticate']);
