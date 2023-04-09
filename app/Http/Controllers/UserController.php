@@ -50,6 +50,7 @@ class UserController extends Controller
         return view('users.login');
     }
 
+
     // Authenticate User
     public function authenticate(Request $request) {
         $formFields = $request->validate([

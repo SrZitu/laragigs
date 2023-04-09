@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Pagination\Paginator;
 
+
 class ListingController extends Controller
 {
     //display all listing
@@ -29,7 +30,7 @@ class ListingController extends Controller
     {
         return view('listings.create');
     }
-//store data
+    //store data
     public function store(Request $request)
     {
         $formFields = $request->validate([
@@ -59,8 +60,13 @@ class ListingController extends Controller
     {
         return view('listings.edit', ['listing' => $listing]);
     }
+    //update
     public function update(Request $request, Listing $listing)
-    {
+    {     // Make sure logged in user is owner
+        if ($listing->user_id != auth()->id()) {
+            abort(403, 'Unauthorized Action');
+        }
+
         $formFields = $request->validate(
             [
                 'title' => 'required',
@@ -85,8 +91,16 @@ class ListingController extends Controller
 
     //deleting listing
     public function delete(Listing $listing)
-    {
+    {       // Make sure logged in user is owner
+        if ($listing->user_id != auth()->id()) {
+            abort(403, 'Unauthorized Action');
+        }
         $listing->delete();
         return redirect('/')->with('message', 'Listing deleted Successfully');
+    }
+
+     // Manage Listings
+     public function manage() {
+        return view('listings.manage', ['listings' => auth()->user()->listings()->get()]);
     }
 }
